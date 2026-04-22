@@ -1,4 +1,11 @@
 <?php
+require 'lib/PHPMailer.php';
+require 'lib/SMTP.php';
+require 'lib/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as MailException;
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
@@ -33,26 +40,51 @@ if (empty($name) || empty($email)) {
     exit;
 }
 
-$to      = 'hi@mdi.io';
-$subject = 'Torin Works — New Assessment Request from ' . $name;
+/* ================================================================
+   SMTP CONFIGURATION
+   Fill in these values via Hostinger File Manager after deploy.
+   Do NOT commit real passwords to the public GitHub repo.
+   ================================================================ */
+$smtpHost     = 'smtp.titan.email';      // Titan SMTP server
+$smtpPort     = 465;                     // SSL port
+$smtpUser     = 'hi@mdi.io';             // Your Titan email
+$smtpPass     = 'YOUR_PASSWORD_HERE';    // ← REPLACE THIS in Hostinger File Manager
+$smtpFrom     = 'hi@mdi.io';             // From address
+$smtpFromName = 'Torin Works';
+$sendTo       = 'hi@mdi.io';             // Where form submissions go
+/* ================================================================ */
 
-$body = "Name: $name\n";
-$body .= "Email: $email\n";
-$body .= "Phone: $phone\n";
-$body .= "Practice: $practice\n";
-$body .= "Message:\n$message\n";
+$mail = new PHPMailer(true);
 
-$headers = "Reply-To: $email\r\n";
-$headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+// Log file path
+$logFile = 'mail_log.txt';
 
-$mailSent = mail($to, $subject, $body, $headers);
+try {
+    $mail->isSMTP();
+    $mail->Host       = $smtpHost;
+    $mail->SMTPAuth   = true;
+    $mail->Username   = $smtpUser;
+    $mail->Password   = $smtpPass;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Port 465
+    $mail->Port       = $smtpPort;
+    $mail->CharSet    = 'UTF-8';
 
-// Log for debugging
-$log = date('Y-m-d H:i:s') . " | To: $to | From: $email | Sent: " . ($mailSent ? 'YES' : 'NO') . " | Subject: $subject\n";
-file_put_contents('mail_log.txt', $log, FILE_APPEND | LOCK_EX);
+    $mail->setFrom($smtpFrom, $smtpFromName);
+    $mail->addAddress($sendTo);
+    $mail->addReplyTo($email, $name);
 
-if ($mailSent) {
+    $mail->Subject = 'Torin Works — New Assessment Request from ' . $name;
+    $mail->Body    = "Name: $name\nEmail: $email\nPhone: $phone\nPractice: $practice\nMessage:\n$message\n";
+
+    $mail->send();
+
+    $log = date('Y-m-d H:i:s') . " | SENT via SMTP | From: $email | Subject: " . $mail->Subject . "\n";
+    file_put_contents($logFile, $log, FILE_APPEND | LOCK_EX);
+
     echo json_encode(['success' => true]);
-} else {
-    echo json_encode(['success' => false, 'error' => 'Mail failed']);
+} catch (MailException $e) {
+    $log = date('Y-m-d H:i:s') . " | FAILED | Error: " . $mail->ErrorInfo . "\n";
+    file_put_contents($logFile, $log, FILE_APPEND | LOCK_EX);
+
+    echo json_encode(['success' => false, 'error' => 'Mail failed: ' . $mail->ErrorInfo]);
 }
