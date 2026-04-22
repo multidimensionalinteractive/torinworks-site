@@ -42,8 +42,8 @@ $body .= "Phone: $phone\n";
 $body .= "Practice: $practice\n";
 $body .= "Message:\n$message\n";
 
-$headers = "From: noreply@torinworks.com\r\n";
-$headers .= "Reply-To: $email\r\n";
+$headers = "Reply-To: $email\r\n";
+$headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
 
 $mailSent = mail($to, $subject, $body, $headers);
 
