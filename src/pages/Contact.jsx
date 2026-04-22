@@ -12,13 +12,13 @@ export default function Contact() {
     e.preventDefault()
     setStatus('sending')
     try {
-      const res = await fetch('/api/contact.php', {
+      const formData = new FormData(e.target)
+      const res = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        headers: { 'Accept': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString(),
       })
-      const data = await res.json()
-      if (data.success) {
+      if (res.ok) {
         setStatus('sent')
         setForm({ name: '', email: '', phone: '', practice: '', message: '' })
       } else {
@@ -84,7 +84,18 @@ export default function Contact() {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                <form
+                  name="contact"
+                  method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  onSubmit={handleSubmit}
+                  style={{ display: 'flex', flexDirection: 'column', gap: 20 }}
+                >
+                  <input type="hidden" name="form-name" value="contact" />
+                  <p hidden>
+                    <label>Don’t fill this out: <input name="bot-field" /></label>
+                  </p>
                   <div>
                     <label>Name</label>
                     <input name="name" value={form.name} onChange={handleChange} required placeholder="Your name" />
