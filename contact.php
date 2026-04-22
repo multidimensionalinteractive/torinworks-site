@@ -47,6 +47,10 @@ $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
 
 $mailSent = mail($to, $subject, $body, $headers);
 
+// Log for debugging
+$log = date('Y-m-d H:i:s') . " | To: $to | From: $email | Sent: " . ($mailSent ? 'YES' : 'NO') . " | Subject: $subject\n";
+file_put_contents('mail_log.txt', $log, FILE_APPEND | LOCK_EX);
+
 if ($mailSent) {
     echo json_encode(['success' => true]);
 } else {
