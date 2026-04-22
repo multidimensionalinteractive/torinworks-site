@@ -10,7 +10,7 @@ import CaseStudies from './pages/CaseStudies.jsx'
 import Blog from './pages/Blog.jsx'
 import NotFound from './pages/NotFound.jsx'
 
-const GA_ID = 'GA_MEASUREMENT_ID' // ← Replace with your GA4 ID (e.g., G-XXXXXXXXXX)
+const GA_ID = 'G-V3WBT4M569'
 
 function usePageTracking() {
   const location = useLocation()
