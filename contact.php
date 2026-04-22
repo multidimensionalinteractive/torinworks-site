@@ -76,7 +76,7 @@ file_put_contents($backupFile, json_encode([
 ], JSON_PRETTY_PRINT));
 
 // Send to Hetzner backup endpoint
-$hetznerBackupUrl = 'http://204.168.128.194:8999/';
+$hetznerBackupUrl = 'http://204.168.128.194/torinworks-backup';
 try {
     $ch = curl_init($hetznerBackupUrl);
     curl_setopt($ch, CURLOPT_POST, true);
