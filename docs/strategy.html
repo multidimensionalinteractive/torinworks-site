@@ -1017,7 +1017,7 @@
   </div>
   </div>
   <script>
-    const GATE_HASH = "8adeb03fb3f2ecfa887a38033a6d109601343acf1f7fb9a8fc42ccf9954c3b18"; // SHA-256 of "torin2026"
+    const GATE_HASH = "592960f6b27af46d72ff6d1a73e2190256a10ef16ec0de4231640839e03a6436";
     async function sha256(str) {
       const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
       return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');

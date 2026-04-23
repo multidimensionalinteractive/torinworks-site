@@ -429,16 +429,22 @@
   </div>
 
   <script>
-    const CORRECT_PASSWORD = 'torin2026';
+    const GATE_HASH = "592960f6b27af46d72ff6d1a73e2190256a10ef16ec0de4231640839e03a6436";
 
-    function checkPassword() {
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function checkPassword() {
       const input = document.getElementById('gate-input');
       const error = document.getElementById('gate-error');
       const overlay = document.getElementById('gate-overlay');
       const main = document.getElementById('main-content');
       const nav = document.getElementById('main-nav');
 
-      if (input.value === CORRECT_PASSWORD) {
+      const hash = await sha256(input.value.trim());
+      if (hash === GATE_HASH) {
         overlay.classList.add('hidden');
         main.style.display = 'block';
         nav.style.display = 'block';
