@@ -48,13 +48,26 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 /* ================================================================
    SMTP CONFIGURATION
-   Fill in these values via Hostinger File Manager after deploy.
+   Password is loaded from config/mailer_secrets.php (gitignored).
    Do NOT commit real passwords to the public GitHub repo.
    ================================================================ */
+$secretsFile = __DIR__ . '/../config/mailer_secrets.php';
+if (file_exists($secretsFile)) {
+    require_once $secretsFile;
+} else {
+    // Fallback: allow env var for container/server deployments
+    $smtpPass = getenv('TORINWORKS_SMTP_PASS') ?: '';
+}
+
+if (empty($smtpPass)) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => 'SMTP password not configured']);
+    exit;
+}
+
 $smtpHost     = 'smtp.titan.email';
 $smtpPort     = 465;
 $smtpUser     = 'hi@mdi.io';
-$smtpPass     = 'YOUR_PASSWORD_HERE';    // ← REPLACE THIS in Hostinger File Manager
 $smtpFrom     = 'hi@mdi.io';
 $smtpFromName = 'Torin Works — NJ Case Review';
 $primaryTo    = 'info@torinworks.com';   // Primary recipient
