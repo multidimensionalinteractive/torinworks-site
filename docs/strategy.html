@@ -1030,14 +1030,14 @@
       if(hash === GATE_HASH){
         document.getElementById('gate-overlay').classList.add('hidden');
         document.getElementById('strategy-content').classList.add('unlocked');
-        sessionStorage.setItem('torinworks_strategy_unlocked', '1');
+        sessionStorage.setItem('torinworks_strategy_v2', '1');
       } else {
         err.textContent = "Incorrect password. Please try again.";
         document.getElementById('gate-pass').value = '';
         document.getElementById('gate-pass').focus();
       }
     }
-    if(sessionStorage.getItem('torinworks_strategy_unlocked') === '1'){
+    if(sessionStorage.getItem('torinworks_strategy_v2') === '1'){
       document.getElementById('gate-overlay').classList.add('hidden');
       document.getElementById('strategy-content').classList.add('unlocked');
     }

@@ -448,7 +448,7 @@
         main.style.display = 'block';
         nav.style.display = 'block';
         document.title = 'Top 5 Car Accident Injuries in New Jersey | NJ Personal Injury Guide';
-        localStorage.setItem('torin_auth', '1');
+        localStorage.setItem('torin_auth_v2', '1');
       } else {
         error.textContent = 'Incorrect password. Please try again.';
         input.value = '';
@@ -460,7 +460,7 @@
       if (e.key === 'Enter') checkPassword();
     });
 
-    if (localStorage.getItem('torin_auth') === '1') {
+    if (localStorage.getItem('torin_auth_v2') === '1') {
       document.getElementById('gate-overlay').classList.add('hidden');
       document.getElementById('main-content').style.display = 'block';
       document.getElementById('main-nav').style.display = 'block';

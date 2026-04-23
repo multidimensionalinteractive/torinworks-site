@@ -449,7 +449,7 @@
         main.style.display = 'block';
         nav.style.display = 'block';
         document.title = 'Free Case Review — New Jersey Personal Injury Matters';
-        localStorage.setItem('torin_auth', '1');
+        localStorage.setItem('torin_auth_v2', '1');
       } else {
         error.textContent = 'Incorrect password. Please try again.';
         input.value = '';
@@ -462,7 +462,7 @@
     });
 
     // Optional: remember auth for session
-    if (localStorage.getItem('torin_auth') === '1') {
+    if (localStorage.getItem('torin_auth_v2') === '1') {
       document.getElementById('gate-overlay').classList.add('hidden');
       document.getElementById('main-content').style.display = 'block';
       document.getElementById('main-nav').style.display = 'block';
