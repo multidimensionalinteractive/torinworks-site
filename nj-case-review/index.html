@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Case Review — New Jersey Personal Injury Matters</title>
+  <meta name="description" content="Free case review for New Jersey personal injury matters. Car accidents, slip and fall, workplace injuries, and wrongful death. No upfront cost.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -79,6 +80,41 @@
     }
     .gate-card button:hover{transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.2)}
     .gate-card .error{color:#ff9e9e; font-size:13px; margin-top:12px; min-height:18px}
+
+    /* Navigation */
+    .topnav{
+      position:sticky; top:0; z-index:100;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    .topnav-inner{
+      max-width:var(--max); margin:0 auto;
+      padding:14px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px;
+    }
+    .topnav-logo{
+      font-weight:800; font-size:16px; color:var(--accent-dark);
+      text-decoration:none; display:flex; align-items:center; gap:8px;
+    }
+    .topnav-logo span{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:28px; height:28px; border-radius:8px;
+      background:linear-gradient(135deg,var(--accent-dark) 0%, #1b4d90 100%);
+      color:#fff; font-size:13px;
+    }
+    .topnav-links{display:flex; gap:6px; flex-wrap:wrap}
+    .topnav-links a{
+      font-size:13px; font-weight:600; color:var(--muted);
+      text-decoration:none; padding:8px 12px; border-radius:10px;
+      transition:all .15s ease; white-space:nowrap;
+    }
+    .topnav-links a:hover{background:var(--accent-soft); color:var(--accent)}
+    .topnav-links a.active{background:var(--accent-soft); color:var(--accent)}
+    @media(max-width:640px){
+      .topnav-links a{font-size:12px; padding:6px 10px}
+    }
 
     /* Main Content */
     .wrap{max-width:var(--max); margin:0 auto; padding:28px 20px 54px}
@@ -248,6 +284,17 @@
     </div>
   </div>
 
+  <!-- Navigation -->
+  <nav class="topnav" id="main-nav" style="display:none">
+    <div class="topnav-inner">
+      <a href="/" class="topnav-logo"><span>TW</span> Torin Works</a>
+      <div class="topnav-links">
+        <a href="/nj-case-review/" class="active">Case Review</a>
+        <a href="/nj-accident-injuries/">Common Injuries</a>
+      </div>
+    </div>
+  </nav>
+
   <!-- Main Content -->
   <div class="wrap" id="main-content" style="display:none">
 
@@ -389,10 +436,12 @@
       const error = document.getElementById('gate-error');
       const overlay = document.getElementById('gate-overlay');
       const main = document.getElementById('main-content');
+      const nav = document.getElementById('main-nav');
 
       if (input.value === CORRECT_PASSWORD) {
         overlay.classList.add('hidden');
         main.style.display = 'block';
+        nav.style.display = 'block';
         document.title = 'Free Case Review — New Jersey Personal Injury Matters';
         localStorage.setItem('torin_auth', '1');
       } else {
@@ -410,6 +459,7 @@
     if (localStorage.getItem('torin_auth') === '1') {
       document.getElementById('gate-overlay').classList.add('hidden');
       document.getElementById('main-content').style.display = 'block';
+      document.getElementById('main-nav').style.display = 'block';
     }
 
     // Form handling (works with Formspree or falls back to demo)
