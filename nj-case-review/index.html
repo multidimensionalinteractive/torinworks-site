@@ -377,7 +377,7 @@
       <div class="kicker">Get Started</div>
       <h2>Start Your Free Case Review</h2>
 
-      <form id="case-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <form id="case-form" action="submit.php" method="POST">
         <div class="form-grid">
           <div class="form-field half">
             <label>Full Name <span class="req">*</span></label>
@@ -462,15 +462,38 @@
       document.getElementById('main-nav').style.display = 'block';
     }
 
-    // Form handling (works with Formspree or falls back to demo)
+    // Form handling — POSTs to submit.php, shows success on 200
     document.getElementById('case-form').addEventListener('submit', function(e) {
-      const action = this.getAttribute('action');
-      if (action.includes('YOUR_FORM_ID')) {
-        e.preventDefault();
-        document.getElementById('case-form').style.display = 'none';
-        document.getElementById('success-msg').style.display = 'block';
-        document.getElementById('form-section').scrollIntoView({behavior:'smooth'});
-      }
+      e.preventDefault();
+      const form = this;
+      const btn = form.querySelector('.submit-btn');
+      const originalText = btn.textContent;
+      btn.textContent = 'Submitting...';
+      btn.disabled = true;
+
+      const data = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: data
+      })
+      .then(r => r.json())
+      .then(j => {
+        if (j.success) {
+          form.style.display = 'none';
+          document.getElementById('success-msg').style.display = 'block';
+          document.getElementById('form-section').scrollIntoView({behavior:'smooth'});
+        } else {
+          alert(j.error || 'Submission failed. Please try again.');
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Network error. Please try again.');
+        btn.textContent = originalText;
+        btn.disabled = false;
+      });
     });
   </script>
 </body>
