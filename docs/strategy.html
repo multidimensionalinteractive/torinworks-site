@@ -186,6 +186,59 @@
     }
     .nav a:hover{background:var(--accent-soft); color:var(--accent)}
     .content{display:grid; gap:18px}
+
+    /* Password Gate */
+    #gate-overlay{
+      position:fixed; inset:0; z-index:9999;
+      background: linear-gradient(135deg, #0f274d 0%, #1b4d90 100%);
+      display:flex; align-items:center; justify-content:center;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+    #gate-overlay.hidden{ display:none !important; }
+    .gate-card{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:28px;
+      padding:54px 48px 48px;
+      max-width:420px; width:90%;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 28px 60px rgba(0,0,0,.25);
+      text-align:center;
+    }
+    .gate-card .lock{
+      width:56px; height:56px; border-radius:16px;
+      background:rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.18);
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 24px;
+      font-size:26px;
+    }
+    .gate-card h2{
+      color:#fff; font-size:26px; font-weight:700; margin:0 0 8px; letter-spacing:-0.01em;
+    }
+    .gate-card p{
+      color:rgba(255,255,255,.72); font-size:15px; margin:0 0 28px; line-height:1.5;
+    }
+    .gate-card input{
+      width:100%; padding:14px 18px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.08);
+      color:#fff; font-size:15px; outline:none; margin-bottom:14px;
+      transition: all .2s ease;
+    }
+    .gate-card input::placeholder{ color:rgba(255,255,255,.45); }
+    .gate-card input:focus{ border-color:rgba(255,255,255,.45); background:rgba(255,255,255,.12); }
+    .gate-card button{
+      width:100%; padding:14px; border-radius:12px; border:none;
+      background:#fff; color:#0f274d; font-size:15px; font-weight:700;
+      cursor:pointer; transition: all .2s ease;
+    }
+    .gate-card button:hover{ transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,.2); }
+    .gate-card .error{
+      color:#ff9e9e; font-size:13px; margin-top:12px; min-height:18px;
+    }
+    #strategy-content{ display:none; }
+    #strategy-content.unlocked{ display:block; }
+
     .section{
       border-radius:22px;
       padding:24px;
@@ -412,6 +465,18 @@
   </style>
 </head>
 <body>
+  <!-- Password Gate -->
+  <div id="gate-overlay">
+    <div class="gate-card">
+      <div class="lock">🔒</div>
+      <h2>Protected Strategy</h2>
+      <p>This document is confidential. Enter the password to continue.</p>
+      <input type="password" id="gate-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')unlock()" />
+      <button onclick="unlock()">Unlock Document</button>
+      <div class="error" id="gate-error"></div>
+    </div>
+  </div>
+  <div id="strategy-content">
   <div class="wrap">
     <section class="hero">
       <div class="eyebrow">Growth &amp; Repositioning Strategy</div>
@@ -950,5 +1015,32 @@
       </main>
     </div>
   </div>
+  </div>
+  <script>
+    const GATE_HASH = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"; // SHA-256 of "torin2026"
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    async function unlock() {
+      const pass = document.getElementById('gate-pass').value.trim();
+      const err = document.getElementById('gate-error');
+      if(!pass){ err.textContent = "Please enter a password."; return; }
+      const hash = await sha256(pass);
+      if(hash === GATE_HASH){
+        document.getElementById('gate-overlay').classList.add('hidden');
+        document.getElementById('strategy-content').classList.add('unlocked');
+        sessionStorage.setItem('torinworks_strategy_unlocked', '1');
+      } else {
+        err.textContent = "Incorrect password. Please try again.";
+        document.getElementById('gate-pass').value = '';
+        document.getElementById('gate-pass').focus();
+      }
+    }
+    if(sessionStorage.getItem('torinworks_strategy_unlocked') === '1'){
+      document.getElementById('gate-overlay').classList.add('hidden');
+      document.getElementById('strategy-content').classList.add('unlocked');
+    }
+  </script>
 </body>
 </html>
