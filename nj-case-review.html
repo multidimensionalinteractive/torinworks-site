@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Case Review — New Jersey Personal Injury Matters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --ink:#142033;
+      --muted:#5e6c84;
+      --line:#dce4f0;
+      --accent:#1d63ed;
+      --accent-dark:#0f274d;
+      --accent-soft:#edf4ff;
+      --soft:#f8fbff;
+      --shadow:0 14px 36px rgba(18,32,55,.08);
+      --radius:20px;
+      --max:860px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,#f8fafd 0%, #f2f6fb 100%);
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* Password Gate */
+    #gate-overlay{
+      position:fixed; inset:0; z-index:9999;
+      background:linear-gradient(135deg, #0f274d 0%, #1b4d90 100%);
+      display:flex; align-items:center; justify-content:center;
+    }
+    #gate-overlay.hidden{display:none !important}
+    .gate-card{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:28px;
+      padding:54px 48px 48px;
+      max-width:420px; width:90%;
+      backdrop-filter:blur(16px);
+      box-shadow:0 28px 60px rgba(0,0,0,.25);
+      text-align:center;
+    }
+    .gate-card .lock{
+      width:56px; height:56px; border-radius:16px;
+      background:rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.18);
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 24px;
+      font-size:26px;
+    }
+    .gate-card h2{
+      color:#fff; font-size:26px; font-weight:700; margin:0 0 8px; letter-spacing:-0.01em;
+    }
+    .gate-card p{
+      color:rgba(255,255,255,.72); font-size:15px; margin:0 0 28px; line-height:1.5;
+    }
+    .gate-card input{
+      width:100%; padding:14px 18px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.08);
+      color:#fff; font-size:15px; outline:none; margin-bottom:14px;
+      transition:all .2s ease; font-family:inherit;
+    }
+    .gate-card input::placeholder{color:rgba(255,255,255,.45)}
+    .gate-card input:focus{border-color:rgba(255,255,255,.45); background:rgba(255,255,255,.12)}
+    .gate-card button{
+      width:100%; padding:14px; border-radius:12px; border:none;
+      background:#fff; color:#0f274d; font-size:15px; font-weight:700;
+      cursor:pointer; transition:all .2s ease; font-family:inherit;
+    }
+    .gate-card button:hover{transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.2)}
+    .gate-card .error{color:#ff9e9e; font-size:13px; margin-top:12px; min-height:18px}
+
+    /* Main Content */
+    .wrap{max-width:var(--max); margin:0 auto; padding:28px 20px 54px}
+    .hero{
+      background:linear-gradient(135deg,var(--accent-dark) 0%, #1b4d90 100%);
+      color:#fff;
+      border-radius:28px;
+      padding:40px 34px 34px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      margin-bottom:20px;
+    }
+    .hero:before,.hero:after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      background:rgba(255,255,255,.08);
+    }
+    .hero:before{width:260px;height:260px;right:-70px;top:-90px}
+    .hero:after{width:180px;height:180px;right:140px;bottom:-80px}
+    .hero h1{
+      margin:0 0 12px;
+      font-size:clamp(26px,4vw,38px);
+      line-height:1.08;
+      max-width:700px;
+      position:relative; z-index:1;
+    }
+    .hero p{
+      margin:0;
+      font-size:16px;
+      color:rgba(255,255,255,.82);
+      max-width:640px;
+      line-height:1.55;
+      position:relative; z-index:1;
+    }
+
+    .section{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+    .section h2{
+      margin:0 0 14px;
+      font-size:22px;
+      line-height:1.18;
+      color:var(--ink);
+    }
+    .section h3{
+      margin:0 0 8px;
+      font-size:17px;
+      line-height:1.25;
+      color:var(--ink);
+    }
+    .section p{margin:10px 0; color:var(--muted); font-size:15px}
+    .section ul{margin:10px 0 0; padding-left:20px}
+    .section li{margin:8px 0; color:var(--muted); font-size:15px}
+    .section ol{margin:10px 0 0; padding-left:20px}
+    .section ol li{margin:10px 0; color:var(--muted); font-size:15px; padding-left:4px}
+
+    .kicker{
+      color:var(--accent);
+      text-transform:uppercase;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.08em;
+      margin-bottom:8px;
+    }
+
+    .disclosures{
+      background:linear-gradient(180deg,#fbfdff 0%, #f6faff 100%);
+    }
+    .disclosures h3{font-size:15px; font-weight:700; margin:18px 0 6px; color:var(--ink)}
+    .disclosures h3:first-child{margin-top:0}
+    .disclosures p{font-size:14px; color:var(--muted); margin:0 0 4px}
+
+    .contact-line{
+      font-size:15px; color:var(--muted); margin:4px 0;
+    }
+
+    /* Form */
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+    @media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+    .form-field{grid-column:1 / -1}
+    .form-field.half{grid-column:auto}
+    @media(max-width:600px){.form-field.half{grid-column:1 / -1}}
+
+    label{
+      display:block;
+      font-size:13px;
+      font-weight:600;
+      color:var(--ink);
+      margin-bottom:6px;
+    }
+    label .req{color:var(--accent)}
+    input[type="text"],input[type="email"],input[type="tel"],select,textarea{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      font-size:15px;
+      outline:none;
+      transition:all .2s ease;
+      font-family:inherit;
+    }
+    input:focus,select:focus,textarea:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-soft);
+    }
+    textarea{min-height:120px; resize:vertical}
+    select{cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235e6c84' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px}
+
+    .submit-btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:14px 28px;
+      border-radius:12px;
+      border:none;
+      background:linear-gradient(135deg,var(--accent-dark) 0%, #1b4d90 100%);
+      color:#fff;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition:all .2s ease;
+      font-family:inherit;
+      margin-top:8px;
+    }
+    .submit-btn:hover{transform:translateY(-1px); box-shadow:0 8px 24px rgba(15,39,77,.25)}
+
+    .form-note{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:14px;
+    }
+
+    .success-msg{
+      display:none;
+      background:linear-gradient(180deg,#eef8f1 0%, #e8f5ec 100%);
+      border:1px solid #c8e6d0;
+      color:#1a5c2e;
+      border-radius:14px;
+      padding:20px 24px;
+      font-size:15px;
+      margin-top:10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Password Gate -->
+  <div id="gate-overlay">
+    <div class="gate-card">
+      <div class="lock">🔒</div>
+      <h2>Protected Page</h2>
+      <p>This document is confidential. Enter the password to continue.</p>
+      <input type="password" id="gate-input" placeholder="Enter password" autocomplete="off">
+      <button onclick="checkPassword()">Unlock Document</button>
+      <div class="error" id="gate-error"></div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="wrap" id="main-content" style="display:none">
+
+    <div class="hero">
+      <h1>Free Case Review — New Jersey Personal Injury Matters</h1>
+      <p>If you’ve been injured due to someone else’s negligence, you may be entitled to compensation. Submit your information below to have your matter reviewed by a New Jersey attorney. You may be contacted if your case appears appropriate for representation or referral to another law firm.</p>
+    </div>
+
+    <div class="section">
+      <div class="kicker">Why Submit Your Case</div>
+      <h2>You May Have a Valid Claim</h2>
+      <ul>
+        <li>You may have a claim for medical bills, lost wages, or pain and suffering</li>
+        <li>Personal injury cases are time-sensitive under New Jersey Statute of Limitations</li>
+        <li>An attorney can determine whether your matter may qualify for legal action or referral</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="kicker">Types of Cases</div>
+      <h2>Cases We Review</h2>
+      <ul>
+        <li>Car accidents</li>
+        <li>Truck and commercial vehicle accidents</li>
+        <li>Slip and fall / premises liability</li>
+        <li>Workplace injuries (non-workers’ comp third-party claims)</li>
+        <li>Wrongful death</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="kicker">Process</div>
+      <h2>How It Works</h2>
+      <ol>
+        <li>Submit your information using the secure form below</li>
+        <li>A New Jersey attorney will review your inquiry</li>
+        <li>If appropriate, you may be contacted regarding representation or referral</li>
+      </ol>
+    </div>
+
+    <div class="section">
+      <div class="kicker">Fees</div>
+      <h2>No Upfront Cost</h2>
+      <p>Most personal injury matters are handled on a contingency fee basis, meaning legal fees are only collected if there is a recovery. Any fee arrangement will be explained in writing before representation begins.</p>
+    </div>
+
+    <div class="section disclosures">
+      <div class="kicker">Disclosures</div>
+      <h2>Important Disclosures</h2>
+
+      <h3>No Attorney-Client Relationship</h3>
+      <p>Submitting this form or communicating with us does not create an attorney-client relationship. Representation begins only through a written agreement.</p>
+
+      <h3>Attorney Review and Referrals</h3>
+      <p>This service is operated by a New Jersey attorney/law firm. Your inquiry may be reviewed to determine whether it is appropriate for representation by this office or referral to another attorney.</p>
+
+      <h3>Referral Fees</h3>
+      <p>If your matter is referred and you retain another attorney, this office may receive a referral fee in accordance with New Jersey Rules of Professional Conduct. Any such arrangement will be disclosed to you and will not increase the total fee you pay.</p>
+
+      <h3>No Guarantee of Outcome or Representation</h3>
+      <p>Not all submissions will result in representation or contact. Prior results do not guarantee a similar outcome.</p>
+
+      <h3>Confidential Information</h3>
+      <p>Do not submit highly sensitive or confidential details. Information shared prior to forming an attorney-client relationship may not be protected.</p>
+
+      <h3>Attorney Advertising</h3>
+      <p>This website constitutes attorney advertising under New Jersey law.</p>
+    </div>
+
+    <div class="section">
+      <div class="kicker">Contact</div>
+      <h2>Contact Information</h2>
+      <p class="contact-line" style="font-weight:600;color:var(--ink)">Law Office of [Attorney Full Name]</p>
+      <p class="contact-line">[Street Address]</p>
+      <p class="contact-line">[City, State, ZIP]</p>
+      <p class="contact-line">[Phone Number]</p>
+    </div>
+
+    <div class="section" id="form-section">
+      <div class="kicker">Get Started</div>
+      <h2>Start Your Free Case Review</h2>
+
+      <form id="case-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <div class="form-grid">
+          <div class="form-field half">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" name="full_name" required placeholder="John Doe">
+          </div>
+          <div class="form-field half">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" name="email" required placeholder="john@example.com">
+          </div>
+          <div class="form-field half">
+            <label>Phone Number <span class="req">*</span></label>
+            <input type="tel" name="phone" required placeholder="(555) 123-4567">
+          </div>
+          <div class="form-field half">
+            <label>Preferred Contact Method</label>
+            <select name="contact_method">
+              <option value="phone">Phone</option>
+              <option value="email">Email</option>
+              <option value="text">Text Message</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Type of Accident <span class="req">*</span></label>
+            <select name="accident_type" required>
+              <option value="" disabled selected>Select accident type</option>
+              <option value="car">Car Accident</option>
+              <option value="truck">Truck / Commercial Vehicle Accident</option>
+              <option value="slip_fall">Slip and Fall / Premises Liability</option>
+              <option value="workplace">Workplace Injury (Third-Party Claim)</option>
+              <option value="wrongful_death">Wrongful Death</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Brief Description of What Happened <span class="req">*</span></label>
+            <textarea name="description" required placeholder="Please describe the incident, including date, location, and any injuries sustained."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Case for Review</button>
+        <p class="form-note">By submitting, you acknowledge that no attorney-client relationship is formed until a written agreement is signed.</p>
+      </form>
+
+      <div class="success-msg" id="success-msg">
+        Thank you. Your submission has been received and will be reviewed by a New Jersey attorney. You will be contacted if your case appears appropriate for representation or referral.
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const CORRECT_PASSWORD = 'torin2026';
+
+    function checkPassword() {
+      const input = document.getElementById('gate-input');
+      const error = document.getElementById('gate-error');
+      const overlay = document.getElementById('gate-overlay');
+      const main = document.getElementById('main-content');
+
+      if (input.value === CORRECT_PASSWORD) {
+        overlay.classList.add('hidden');
+        main.style.display = 'block';
+        document.title = 'Free Case Review — New Jersey Personal Injury Matters';
+        localStorage.setItem('torin_auth', '1');
+      } else {
+        error.textContent = 'Incorrect password. Please try again.';
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    document.getElementById('gate-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    // Optional: remember auth for session
+    if (localStorage.getItem('torin_auth') === '1') {
+      document.getElementById('gate-overlay').classList.add('hidden');
+      document.getElementById('main-content').style.display = 'block';
+    }
+
+    // Form handling (works with Formspree or falls back to demo)
+    document.getElementById('case-form').addEventListener('submit', function(e) {
+      const action = this.getAttribute('action');
+      if (action.includes('YOUR_FORM_ID')) {
+        e.preventDefault();
+        document.getElementById('case-form').style.display = 'none';
+        document.getElementById('success-msg').style.display = 'block';
+        document.getElementById('form-section').scrollIntoView({behavior:'smooth'});
+      }
+    });
+  </script>
+</body>
+</html>
