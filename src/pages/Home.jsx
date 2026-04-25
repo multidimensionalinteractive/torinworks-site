@@ -502,6 +502,123 @@ function Outcomes() {
   )
 }
 
+/* ─── Consulting ─── */
+function Consulting() {
+  const pillars = [
+    {
+      kicker: 'Evaluation',
+      title: 'Consulting & Strategic Evaluation',
+      items: [
+        'Assess core business objectives, revenue targets, and growth constraints',
+        'Audit existing marketing channels, campaigns, and brand positioning',
+        'Identify gaps in customer acquisition, conversion, and retention',
+        'Analyze target audience segments, buyer journeys, and competitive landscape',
+        'Evaluate current technology stack, analytics, and data utilization',
+        'Develop a clear, actionable marketing roadmap aligned with business goals',
+        'Establish KPIs, attribution models, and performance benchmarks',
+      ],
+    },
+    {
+      kicker: 'Strategy',
+      title: 'Marketing Strategy Development',
+      items: [
+        'Define brand messaging, voice, and market differentiation',
+        'Build integrated multi-channel strategies (organic, paid, outbound, partnerships)',
+        'Develop funnel architecture from awareness to conversion and retention',
+        'Create content strategy aligned with audience intent and SEO opportunities',
+        'Recommend budget allocation and scaling strategies',
+      ],
+    },
+    {
+      kicker: 'Implementation',
+      title: 'Project Development & Implementation',
+      items: [
+        'Website planning, architecture, and conversion-focused design',
+        'Development of microsites and campaign-specific landing pages',
+        'Social media infrastructure setup, optimization, and content systems',
+        'Content production workflows including blogs, video, and multimedia assets',
+        'CRM and marketing automation system integration',
+      ],
+    },
+    {
+      kicker: 'Content',
+      title: 'Content & Distribution Systems',
+      items: [
+        'Design and implementation of scalable content delivery pipelines',
+        'Editorial calendar creation and content lifecycle management',
+        'SEO optimization and performance tracking',
+        'Multi-platform distribution strategies (web, social, email, syndication)',
+      ],
+    },
+    {
+      kicker: 'AI & Automation',
+      title: 'AI & Automation Integration',
+      items: [
+        'Integration of AI agents for customer engagement and support',
+        'Marketing automation using AI-driven personalization and segmentation',
+        'Chatbots and conversational interfaces for lead capture and qualification',
+        'Workflow automation for content generation, scheduling, and analytics',
+        'Data-driven optimization using predictive insights and machine learning tools',
+      ],
+    },
+    {
+      kicker: 'Optimization',
+      title: 'Ongoing Optimization & Advisory',
+      items: [
+        'Continuous performance monitoring and reporting',
+        'A/B testing and conversion rate optimization',
+        'Strategy refinement based on data insights and market changes',
+        'Executive-level advisory for scaling marketing operations',
+      ],
+    },
+  ];
+
+  return (
+    <section style={{ background: 'var(--paper-2)', padding: '120px 0', borderTop: '1px solid var(--line)' }}>
+      <div className="container-wide">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', marginBottom: 64, alignItems: 'end' }}>
+          <div>
+            <div className="eyebrow" style={{ marginBottom: 20 }}>Consulting</div>
+            <h2 style={{ fontSize: 'clamp(38px, 4vw, 56px)', lineHeight: 1.08, letterSpacing: '-0.02em' }}>
+              <span style={{ display: 'block', marginBottom: '0.3em' }}>Strategic marketing consulting</span>
+              <span style={{ display: 'block', fontWeight: 300, color: 'var(--accent-deep)' }}>built for measurable growth.</span>
+            </h2>
+          </div>
+          <p style={{ fontSize: 17, color: 'var(--ink-muted)', lineHeight: 1.6, maxWidth: 480 }}>
+            We combine deep evaluation, modern digital infrastructure, and intelligent automation to build scalable, high-performing marketing systems — aligned to your business goals and measured by outcomes.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 1, background: 'var(--line)', border: '1px solid var(--line)' }}>
+          {pillars.map((p, i) => (
+            <div key={i} style={{ background: 'var(--paper)', padding: '34px 28px 36px', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-deep)', marginBottom: 14 }}>{p.kicker}</div>
+              <div style={{ fontFamily: 'var(--serif)', fontSize: 22, letterSpacing: '-0.012em', lineHeight: 1.25, marginBottom: 18 }}>{p.title}</div>
+              <ul style={{ margin: 0, paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {p.items.map((item, j) => (
+                  <li key={j} style={{ fontSize: 14, color: 'var(--ink-muted)', lineHeight: 1.55 }}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ marginTop: 40, background: 'var(--paper)', border: '1px solid var(--line)', padding: '32px 34px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'center' }}>
+          <div>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: 22, letterSpacing: '-0.01em', marginBottom: 8 }}>Outcome</div>
+            <p style={{ fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.6, margin: 0, maxWidth: 720 }}>
+              A cohesive, data-driven marketing ecosystem that connects strategy, execution, and automation — enabling sustainable growth, improved efficiency, and measurable ROI.
+            </p>
+          </div>
+          <Link to="/contact" className="btn btn-primary" style={{ whiteSpace: 'nowrap' }}>
+            Discuss your goals <Icon name="arrow" size={16} />
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── CTA ─── */
 function CTA() {
   return (
@@ -557,6 +674,7 @@ export default function Home() {
       <TrustSafety />
       <Pipeline />
       <Outcomes />
+      <Consulting />
       <CTA />
     </>
   )

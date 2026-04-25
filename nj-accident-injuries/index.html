@@ -428,7 +428,7 @@
   </div>
 
   <script>
-    const GATE_HASH = "592960f6b27af46d72ff6d1a73e2190256a10ef16ec0de4231640839e03a6436";
+    const GATE_HASH = "87295378512c342ff541907a6535464d949148208fc01341d7f545b7f3aeb4bb";
 
     async function sha256(str) {
       const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
@@ -448,7 +448,7 @@
         main.style.display = 'block';
         nav.style.display = 'block';
         document.title = 'Top 5 Car Accident Injuries in New Jersey | NJ Personal Injury Guide';
-        localStorage.setItem('torin_auth_v2', '1');
+        localStorage.setItem('torin_auth_v3', '1');
       } else {
         error.textContent = 'Incorrect password. Please try again.';
         input.value = '';
@@ -460,7 +460,7 @@
       if (e.key === 'Enter') checkPassword();
     });
 
-    if (localStorage.getItem('torin_auth_v2') === '1') {
+    if (localStorage.getItem('torin_auth_v3') === '1') {
       document.getElementById('gate-overlay').classList.add('hidden');
       document.getElementById('main-content').style.display = 'block';
       document.getElementById('main-nav').style.display = 'block';
