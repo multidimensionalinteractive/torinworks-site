@@ -504,6 +504,25 @@ function Outcomes() {
 
 /* ─── Consulting ─── */
 function Consulting() {
+  const [isMobile, setIsMobile] = useState(false)
+  const [expanded, setExpanded] = useState(new Set())
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 760px)')
+    const update = () => setIsMobile(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
+  const toggle = (i) => {
+    setExpanded(prev => {
+      const next = new Set(prev)
+      if (next.has(i)) next.delete(i); else next.add(i)
+      return next
+    })
+  }
+
   const pillars = [
     {
       kicker: 'Evaluation',
@@ -595,10 +614,22 @@ function Consulting() {
               <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-deep)', marginBottom: 14 }}>{p.kicker}</div>
               <div style={{ fontFamily: 'var(--serif)', fontSize: 22, letterSpacing: '-0.012em', lineHeight: 1.25, marginBottom: 18 }}>{p.title}</div>
               <ul style={{ margin: 0, paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {p.items.map((item, j) => (
+                {(isMobile && !expanded.has(i) ? p.items.slice(0, 2) : p.items).map((item, j) => (
                   <li key={j} style={{ fontSize: 14, color: 'var(--ink-muted)', lineHeight: 1.55 }}>{item}</li>
                 ))}
               </ul>
+              {isMobile && p.items.length > 2 && (
+                <button
+                  onClick={() => toggle(i)}
+                  style={{
+                    marginTop: 14, alignSelf: 'flex-start',
+                    fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase',
+                    color: 'var(--accent-deep)', background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                  }}
+                >
+                  {expanded.has(i) ? 'Show less' : `Show all (${p.items.length})`}
+                </button>
+              )}
             </div>
           ))}
         </div>
