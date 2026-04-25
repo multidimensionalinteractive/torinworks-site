@@ -17,6 +17,9 @@ const paths = {
   trend: <><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></>,
   menu: <><path d="M4 8h16M4 16h16"/></>,
   close: <><path d="M18 6L6 18M6 6l12 12"/></>,
+  target: <><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></>,
+  chart: <><path d="M18 20V10M12 20V4M6 20v-6"/></>,
+  cpu: <><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3"/></>,
 }
 
 export function Icon({ name, size = 20, stroke = 1.5 }) {

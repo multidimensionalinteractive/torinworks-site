@@ -8,6 +8,7 @@ import FAQ from './pages/FAQ.jsx'
 import Contact from './pages/Contact.jsx'
 import CaseStudies from './pages/CaseStudies.jsx'
 import Blog from './pages/Blog.jsx'
+import Leads from './pages/Leads.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 const GA_ID = 'G-V3WBT4M569'
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/case-studies" element={<CaseStudies />} />
+        <Route path="/leads" element={<Leads />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

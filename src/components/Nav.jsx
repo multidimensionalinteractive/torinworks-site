@@ -38,10 +38,9 @@ export default function Nav() {
   }
 
   const linkItems = [
-    { label: 'Solutions', action: () => scrollTo('solutions') },
-    { label: 'How it works', action: () => scrollTo('how-it-works') },
-    { label: 'Where we work', action: () => scrollTo('upstream') },
-    { label: 'Results', action: () => scrollTo('results') },
+    { label: 'Services', action: () => scrollTo('consulting') },
+    { label: 'Lead System', to: '/leads' },
+    { label: 'Case Studies', to: '/case-studies' },
     { label: 'About', to: '/about' },
   ]
 
@@ -52,7 +51,7 @@ export default function Nav() {
           <Logo color="white" size={28} />
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15, minWidth: 0 }}>
             <span style={{ fontFamily: 'var(--serif)', fontSize: 19, letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>Torin Works</span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: 9.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'oklch(75% 0.06 210)', marginTop: 3, whiteSpace: 'nowrap' }}>Growth Systems</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: 9.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'oklch(75% 0.06 210)', marginTop: 3, whiteSpace: 'nowrap' }}>Marketing Consulting</span>
           </div>
         </Link>
 
