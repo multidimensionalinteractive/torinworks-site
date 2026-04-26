@@ -141,7 +141,7 @@ function Problem() {
   return (
     <section style={{ background: 'var(--paper)', padding: '120px 0' }}>
       <div className="container-wide">
-        <div style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 'clamp(40px, 5vw, 90px)', alignItems: 'start' }}>
+        <div className="r-split" style={{ display: 'grid', gridTemplateColumns: '0.85fr 1.15fr', gap: 'clamp(40px, 5vw, 90px)', alignItems: 'start' }}>
           <div>
             <div className="eyebrow" style={{ marginBottom: 20 }}>The real problem</div>
             <h2 style={{ fontSize: 'clamp(38px, 4vw, 56px)', lineHeight: 1.18, letterSpacing: '-0.02em' }}>
@@ -152,7 +152,7 @@ function Problem() {
               The gap between an inquiry and a booked visit is where revenue quietly disappears. We close that gap.
             </p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, background: 'var(--line)', border: '1px solid var(--line)' }}>
+          <div className="r-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, background: 'var(--line)', border: '1px solid var(--line)' }}>
             {gaps.map((g, i) => (
               <div key={i} style={{ background: 'var(--paper)', padding: '32px 28px' }}>
                 <div style={{
@@ -176,7 +176,7 @@ function Handoff() {
   return (
     <section style={{ background: 'var(--paper)', padding: '120px 0', borderTop: '1px solid var(--line)' }}>
       <div className="container-wide">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', alignItems: 'center' }}>
+        <div className="r-split" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', alignItems: 'center' }}>
           <div>
             <div className="eyebrow" style={{ marginBottom: 20 }}>Our role</div>
             <h2 style={{ fontSize: 'clamp(38px, 4vw, 56px)', lineHeight: 1.18, letterSpacing: '-0.02em' }}>
@@ -195,7 +195,7 @@ function Handoff() {
               { who: 'Torin', what: 'Watches what converts · shifts budget toward it · cuts channels that waste spend' },
               { who: 'You', what: 'Show up for the consult · deliver great care · get referrals' },
             ].map((r, i) => (
-              <div key={i} style={{
+              <div key={i} className="r-table-row" style={{
                 display: 'grid', gridTemplateColumns: '90px 1fr', gap: 20,
                 padding: '18px 0', borderTop: i === 0 ? 'none' : '1px solid var(--line)', alignItems: 'baseline',
               }}>
@@ -224,7 +224,7 @@ function Approach() {
         background: 'radial-gradient(ellipse at center, oklch(45% 0.14 220 / 0.35), transparent 65%)', pointerEvents: 'none',
       }} />
       <div className="container-wide" style={{ position: 'relative' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', marginBottom: 72, alignItems: 'end' }}>
+        <div className="r-split" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', marginBottom: 72, alignItems: 'end' }}>
           <div>
             <div className="eyebrow on-dark" style={{ marginBottom: 20 }}>How we work</div>
             <h2 style={{ fontSize: 'clamp(38px, 4vw, 56px)', lineHeight: 1.08, letterSpacing: '-0.02em', color: 'white' }}>
@@ -306,7 +306,7 @@ function Upstream() {
   return (
     <section id="upstream" style={{ background: 'var(--paper-2)', padding: '120px 0', borderTop: '1px solid var(--line)' }}>
       <div className="container-wide">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', marginBottom: 56, alignItems: 'end' }}>
+        <div className="r-split" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', marginBottom: 56, alignItems: 'end' }}>
           <div>
             <div className="eyebrow" style={{ marginBottom: 20 }}>And everything upstream</div>
             <h2 style={{ fontSize: 'clamp(36px, 3.8vw, 52px)', lineHeight: 1.12, letterSpacing: '-0.02em' }}>
@@ -386,7 +386,7 @@ function Pipeline() {
         backgroundSize: '80px 80px',
       }} />
       <div className="container-wide" style={{ position: 'relative' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 60px)', alignItems: 'end', marginBottom: 56 }}>
+        <div className="r-split" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 60px)', alignItems: 'end', marginBottom: 56 }}>
           <div>
             <div className="eyebrow on-dark" style={{ marginBottom: 20 }}>Before / after</div>
             <h2 style={{ fontSize: 'clamp(38px, 4vw, 56px)', lineHeight: 1.18, letterSpacing: '-0.02em', color: 'white' }}>
@@ -410,8 +410,8 @@ function Pipeline() {
           </div>
         </div>
 
-        <div style={{ border: '1px solid oklch(100% 0 0 / 0.12)', padding: '40px 44px 44px', background: 'oklch(100% 0 0 / 0.02)' }}>
-          <div style={{
+        <div className="r-pad-sm" style={{ border: '1px solid oklch(100% 0 0 / 0.12)', padding: '40px 44px 44px', background: 'oklch(100% 0 0 / 0.02)' }}>
+          <div className="r-table-row" style={{
             display: 'grid', gridTemplateColumns: '130px 1fr 80px', gap: 24, alignItems: 'center',
             fontFamily: 'var(--mono)', fontSize: 10.5, letterSpacing: '0.14em', textTransform: 'uppercase',
             color: 'oklch(65% 0.03 220)', marginBottom: 20, paddingBottom: 14, borderBottom: '1px solid oklch(100% 0 0 / 0.08)',
@@ -423,7 +423,7 @@ function Pipeline() {
             const prevCount = i === 0 ? max : data[i - 1].count
             const lostPct = ((prevCount - d.count) / max) * 100
             return (
-              <div key={d.stage} style={{ display: 'grid', gridTemplateColumns: '130px 1fr 80px', gap: 24, alignItems: 'center', padding: '16px 0', borderTop: i === 0 ? 'none' : '1px solid oklch(100% 0 0 / 0.05)' }}>
+              <div key={d.stage} className="r-table-row" style={{ display: 'grid', gridTemplateColumns: '130px 1fr 80px', gap: 24, alignItems: 'center', padding: '16px 0', borderTop: i === 0 ? 'none' : '1px solid oklch(100% 0 0 / 0.05)' }}>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: 19, letterSpacing: '-0.01em' }}>{d.stage}</div>
                 <div style={{ position: 'relative', height: 32, display: 'flex', alignItems: 'center' }}>
                   <div style={{
@@ -448,7 +448,7 @@ function Pipeline() {
               </div>
             )
           })}
-          <div style={{ marginTop: 28, paddingTop: 20, borderTop: '1px solid oklch(100% 0 0 / 0.1)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 32 }}>
+          <div className="r-grid-2" style={{ marginTop: 28, paddingTop: 20, borderTop: '1px solid oklch(100% 0 0 / 0.1)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 32 }}>
             <div>
               <div style={{ fontFamily: 'var(--mono)', fontSize: 10.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'oklch(65% 0.03 220)', marginBottom: 8 }}>Booked visits</div>
               <div style={{ fontFamily: 'var(--serif)', fontSize: 40, letterSpacing: '-0.02em' }}>

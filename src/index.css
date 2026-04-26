@@ -80,6 +80,19 @@ button { font-family: var(--sans); cursor: pointer; border: none; background: no
   .mobile-nav { display: none !important; }
 }
 
+/* Responsive grid utilities */
+@media (max-width: 760px) {
+  .r-split { grid-template-columns: 1fr !important; }
+  .r-grid-2 { grid-template-columns: 1fr !important; }
+  .r-grid-3 { grid-template-columns: 1fr !important; }
+  .r-grid-4 { grid-template-columns: 1fr 1fr !important; }
+  .r-table-row { grid-template-columns: 1fr auto !important; gap: 8px 16px !important; }
+  .r-table-row > :nth-child(1) { grid-column: 1 / -1; }
+  .r-table-row > :nth-child(3) { text-align: left !important; }
+  .r-pad-sm { padding: 24px 20px !important; }
+  .r-gap-sm { gap: 16px !important; }
+}
+
 /* Form styles */
 input, textarea, select {
   font-family: var(--sans);
