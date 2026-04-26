@@ -47,13 +47,13 @@ export const VERTICALS = {
     photo: 'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=1600&q=80',
     photoAlt: 'Law firm interior',
   },
-  derm: {
-    label: 'Dermatology',
+  healthcare: {
+    label: 'Healthcare Companies',
     hero: {
-      kicker: 'For dermatology & plastic surgery',
-      headline: 'More high-value procedures.',
+      kicker: 'For healthcare companies',
+      headline: 'More booked consultations.',
       headline2: 'Less follow-up friction.',
-      sub: 'We nurture cosmetic inquiries from first click to booked consultation, recover dormant leads, and keep your surgical calendar full without adding staff.',
+      sub: 'We nurture patient and client inquiries from first click to booked appointment, recover dormant leads, and keep your schedule full without adding staff.',
     },
     stats: [
       { k: '< 60 sec', v: 'Average first-response time' },
@@ -62,6 +62,22 @@ export const VERTICALS = {
     ],
     photo: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1600&q=80',
     photoAlt: 'Consultation setting',
+  },
+  business: {
+    label: 'Business Companies',
+    hero: {
+      kicker: 'For B2B & service companies',
+      headline: 'More qualified pipeline.',
+      headline2: 'Less wasted outreach.',
+      sub: 'We capture inbound inquiries, qualify leads in real time, and keep your sales pipeline full — so your team focuses on closing, not chasing.',
+    },
+    stats: [
+      { k: '< 60 sec', v: 'Average first-response time' },
+      { k: '+38%', v: 'Lift in qualified meetings' },
+      { k: '24/7', v: 'Inbound coverage' },
+    ],
+    photo: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80',
+    photoAlt: 'Modern office workspace',
   },
 };
 
