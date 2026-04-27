@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brent Coon Case Intake Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f7fa;
+      color: #1a1a2e;
+      line-height: 1.5;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e1e8ed;
+    }
+    h1 { font-size: 1.75rem; color: #1a1a2e; }
+    .badge {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white; padding: 0.5rem 1rem; border-radius: 20px;
+      font-size: 0.875rem; font-weight: 600;
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: white; padding: 1.5rem; border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .stat-card h3 { font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem; }
+    .stat-card .number { font-size: 2rem; font-weight: 700; color: #1a1a2e; }
+    .tabs {
+      display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
+      border-bottom: 2px solid #e1e8ed; padding-bottom: 0;
+    }
+    .tab {
+      padding: 0.75rem 1.5rem; cursor: pointer; border: none; background: none;
+      font-size: 0.875rem; font-weight: 600; color: #6b7280;
+      border-bottom: 2px solid transparent; margin-bottom: -2px;
+    }
+    .tab.active { color: #667eea; border-bottom-color: #667eea; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .btn {
+      padding: 0.75rem 1.5rem; border: none; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(102,126,234,0.4); }
+    .btn-ghost { background: #f3f4f6; color: #4b5563; }
+    .btn-ghost:hover { background: #e5e7eb; }
+    .form-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group label { font-size: 0.875rem; font-weight: 600; color: #374151; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px;
+      font-size: 0.875rem; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: #667eea;
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .card {
+      background: white; padding: 1.5rem; border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem;
+    }
+    .case-list { display: flex; flex-direction: column; gap: 1rem; }
+    .case-item {
+      background: white; padding: 1.25rem; border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      display: flex; justify-content: space-between; align-items: flex-start;
+      border-left: 4px solid #667eea;
+      transition: transform 0.2s;
+    }
+    .case-item:hover { transform: translateX(4px); }
+    .case-item.grade-a { border-left-color: #10b981; }
+    .case-item.grade-b { border-left-color: #f59e0b; }
+    .case-item.grade-c { border-left-color: #f97316; }
+    .case-item.grade-d { border-left-color: #ef4444; }
+    .case-info h4 { font-size: 1rem; margin-bottom: 0.25rem; }
+    .case-meta { font-size: 0.75rem; color: #6b7280; display: flex; gap: 1rem; margin-top: 0.5rem; }
+    .grade-badge {
+      padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem;
+      font-weight: 700; text-transform: uppercase;
+    }
+    .grade-a { background: #d1fae5; color: #065f46; }
+    .grade-b { background: #fef3c7; color: #92400e; }
+    .grade-c { background: #ffedd5; color: #c2410c; }
+    .grade-d { background: #fee2e2; color: #991b1b; }
+    .status-badge {
+      padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-new { background: #dbeafe; color: #1e40af; }
+    .status-review { background: #fef3c7; color: #92400e; }
+    .status-retained { background: #d1fae5; color: #065f46; }
+    .status-declined { background: #fee2e2; color: #991b1b; }
+    .actions { display: flex; gap: 0.5rem; }
+    .actions button { padding: 0.5rem 0.75rem; font-size: 0.75rem; }
+    .score-display {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white; padding: 1.5rem; border-radius: 12px; text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .score-display h2 { font-size: 3rem; margin-bottom: 0.5rem; }
+    .score-display p { opacity: 0.9; }
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: #1a1a2e; color: white; padding: 1rem 1.5rem;
+      border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.3s; z-index: 100;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Case Intake Dashboard</h1>
+        <p style="color: #6b7280; font-size: 0.875rem;">Brent Coon & Associates — AI-Powered Case Intake</p>
+      </div>
+      <div class="badge">LIVE</div>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Today's Cases</h3>
+        <div class="number" id="stat-today">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>This Week</h3>
+        <div class="number" id="stat-week">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Retained</h3>
+        <div class="number" id="stat-retained">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Conversion Rate</h3>
+        <div class="number" id="stat-rate">0%</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('intake')">New Intake</button>
+      <button class="tab" onclick="switchTab('cases')">Active Cases</button>
+      <button class="tab" onclick="switchTab('analytics')">Analytics</button>
+    </div>
+
+    <div id="intake" class="panel active">
+      <div class="card">
+        <h3 style="margin-bottom: 1.5rem;">New Case Intake Form</h3>
+        <form id="intakeForm" onsubmit="submitCase(event)">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Contact Name *</label>
+              <input type="text" name="contactName" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+              <label>Phone *</label>
+              <input type="tel" name="phone" required placeholder="(555) 123-4567">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" name="email" placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+              <label>Incident Date *</label>
+              <input type="date" name="incidentDate" required id="incidentDate">
+            </div>
+            <div class="form-group">
+              <label>Practice Area *</label>
+              <select name="practiceArea" required>
+                <option value="">Select...</option>
+                <option value="PI">Personal Injury</option>
+                <option value="MT">Mass Tort</option>
+                <option value="BL">Business Litigation</option>
+                <option value="WC">Workers Comp</option>
+                <option value="EM">Employment</option>
+                <option value="OT">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Injury Severity *</label>
+              <select name="severity" required id="severity">
+                <option value="">Select...</option>
+                <option value="minor">Minor (treatment < 3 months)</option>
+                <option value="moderate">Moderate (3-6 months)</option>
+                <option value="serious">Serious (surgery/hospitalization)</option>
+                <option value="catastrophic">Catastrophic (permanent disability)</option>
+              </select>
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>Case Summary *</label>
+              <textarea name="summary" required placeholder="Brief description of the incident and injuries..."></textarea>
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>Medical Treatment Info</label>
+              <textarea name="medicalInfo" placeholder="Current treatment, providers, diagnosis codes if known..."></textarea>
+            </div>
+          </div>
+
+          <div class="score-display" id="scoreDisplay" style="display: none; margin-top: 1.5rem;">
+            <div style="display: flex; justify-content: space-around; align-items: center;">
+              <div>
+                <h2 id="gradeLetter">A</h2>
+                <p id="gradeLabel">High Priority Case</p>
+              </div>
+              <div style="text-align: left;">
+                <p>Timeline: <strong id="timelineWeeks">4 weeks</strong></p>
+                <p>Est. Value: <strong id="estValue">$150K - $300K</strong></p>
+                <p>Confidence: <strong id="confidence">87%</strong></p>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">Submit Case</button>
+            <button type="button" class="btn btn-ghost" onclick="calculateScore()">Calculate Score</button>
+            <button type="button" class="btn btn-ghost" onclick="fillDemo()">Demo Data</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="cases" class="panel">
+      <div class="case-list" id="caseList"></div>
+    </div>
+
+    <div id="analytics" class="panel">
+      <div class="card">
+        <h3 style="margin-bottom: 1rem;">Grade Distribution</h3>
+        <div id="gradeChart" style="display: flex; gap: 1rem; align-items: flex-end; height: 200px; padding: 1rem; background: #f9fafb; border-radius: 8px;"></div>
+      </div>
+      <div class="card" style="margin-top: 1rem;">
+        <h3 style="margin-bottom: 1rem;">Practice Area Breakdown</h3>
+        <div id="practiceChart"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Storage
+    let cases = JSON.parse(localStorage.getItem('bc_cases') || '[]');
+
+    // Auto-set incident date to today
+    document.getElementById('incidentDate').valueAsDate = new Date();
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tab).classList.add('active');
+      if (tab === 'cases') renderCases();
+      if (tab === 'analytics') renderAnalytics();
+    }
+
+    function calculateScore() {
+      const date = document.getElementById('incidentDate').value;
+      const severity = document.getElementById('severity').value;
+      if (!date || !severity) {
+        showToast('Please fill in incident date and severity');
+        return;
+      }
+
+      const daysSince = Math.floor((new Date() - new Date(date)) / (1000 * 60 * 60 * 24));
+      let grade, weeks, value, confidence;
+
+      // Scoring logic
+      const severityWeights = { minor: 1, moderate: 2, serious: 3, catastrophic: 4 };
+      const weight = severityWeights[severity] || 1;
+
+      if (daysSince <= 42 && weight >= 2) {
+        grade = 'A'; weeks = '≤ 6 weeks'; value = '$200K - $500K'; confidence = '92%';
+      } else if (daysSince <= 63 && weight >= 2) {
+        grade = 'B'; weeks = '7-9 weeks'; value = '$150K - $300K'; confidence = '78%';
+      } else if (daysSince <= 84) {
+        grade = 'C'; weeks = '10-12 weeks'; value = '$75K - $200K'; confidence = '65%';
+      } else {
+        grade = 'D'; weeks = '12+ weeks'; value = 'Review needed'; confidence = 'Decline';
+      }
+
+      const display = document.getElementById('scoreDisplay');
+      display.style.display = 'block';
+      document.getElementById('gradeLetter').textContent = grade;
+      document.getElementById('gradeLabel').textContent = grade === 'D' ? 'Decline' : grade + '-Grade Case';
+      document.getElementById('timelineWeeks').textContent = weeks;
+      document.getElementById('estValue').textContent = value;
+      document.getElementById('confidence').textContent = confidence;
+      display.style.background = grade === 'A' ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' :
+                                  grade === 'B' ? 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' :
+                                  grade === 'C' ? 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)' :
+                                                  'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+    }
+
+    function submitCase(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form));
+      
+      const daysSince = Math.floor((new Date() - new Date(data.incidentDate)) / (1000 * 60 * 60 * 24));
+      const severityWeights = { minor: 1, moderate: 2, serious: 3, catastrophic: 4 };
+      const weight = severityWeights[data.severity] || 1;
+      
+      let grade;
+      if (daysSince <= 42 && weight >= 2) grade = 'A';
+      else if (daysSince <= 63 && weight >= 2) grade = 'B';
+      else if (daysSince <= 84) grade = 'C';
+      else grade = 'D';
+
+      const newCase = {
+        id: Date.now(),
+        ...data,
+        grade,
+        status: 'new',
+        createdAt: new Date().toISOString(),
+        daysSince
+      };
+
+      cases.unshift(newCase);
+      localStorage.setItem('bc_cases', JSON.stringify(cases));
+      
+      showToast(`Case submitted! Grade: ${grade}`);
+      form.reset();
+      document.getElementById('scoreDisplay').style.display = 'none';
+      document.getElementById('incidentDate').valueAsDate = new Date();
+      updateStats();
+    }
+
+    function renderCases() {
+      const list = document.getElementById('caseList');
+      if (cases.length === 0) {
+        list.innerHTML = '<div class="card" style="text-align: center; color: #6b7280;">No cases yet. Submit your first case!</div>';
+        return;
+      }
+      list.innerHTML = cases.map(c => `
+        <div class="case-item grade-${c.grade.toLowerCase()}">
+          <div class="case-info">
+            <h4>${c.contactName} — ${c.practiceArea}</h4>
+            <p style="font-size: 0.875rem; color: #4b5563;">${c.summary.substring(0, 120)}...</p>
+            <div class="case-meta">
+              <span>${new Date(c.createdAt).toLocaleDateString()}</span>
+              <span>${c.phone}</span>
+              <span>${c.daysSince} days since incident</span>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <span class="grade-badge grade-${c.grade.toLowerCase()}">${c.grade}</span>
+            <div style="margin-top: 0.5rem;">
+              <span class="status-badge status-${c.status}">${c.status}</span>
+            </div>
+            <div class="actions" style="margin-top: 0.5rem;">
+              ${c.status === 'new' ? `<button class="btn btn-ghost" onclick="updateStatus(${c.id}, 'review')">Review</button>` : ''}
+              ${c.status === 'review' ? `<button class="btn btn-ghost" onclick="updateStatus(${c.id}, 'retained')" style="background: #d1fae5; color: #065f46;">Retain</button><button class="btn btn-ghost" onclick="updateStatus(${c.id}, 'declined')" style="background: #fee2e2; color: #991b1b;">Decline</button>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateStatus(id, status) {
+      const c = cases.find(x => x.id === id);
+      if (c) { c.status = status; localStorage.setItem('bc_cases', JSON.stringify(cases)); renderCases(); updateStats(); showToast(`Case ${status}`); }
+    }
+
+    function updateStats() {
+      const today = new Date().toDateString();
+      document.getElementById('stat-today').textContent = cases.filter(c => new Date(c.createdAt).toDateString() === today).length;
+      document.getElementById('stat-week').textContent = cases.length;
+      const retained = cases.filter(c => c.status === 'retained').length;
+      document.getElementById('stat-retained').textContent = retained;
+      document.getElementById('stat-rate').textContent = cases.length ? Math.round((retained / cases.length) * 100) + '%' : '0%';
+    }
+
+    function renderAnalytics() {
+      const grades = { A: 0, B: 0, C: 0, D: 0 };
+      const practices = {};
+      cases.forEach(c => { grades[c.grade]++; practices[c.practiceArea] = (practices[c.practiceArea] || 0) + 1; });
+      
+      const maxCount = Math.max(...Object.values(grades), 1);
+      document.getElementById('gradeChart').innerHTML = Object.entries(grades).map(([g, count]) => `
+        <div style="flex: 1; text-align: center;">
+          <div style="height: ${(count / maxCount) * 160}px; background: ${g === 'A' ? '#10b981' : g === 'B' ? '#f59e0b' : g === 'C' ? '#f97316' : '#ef4444'}; border-radius: 4px 4px 0 0; transition: height 0.3s;"></div>
+          <div style="margin-top: 0.5rem; font-size: 0.75rem; font-weight: 600;">${g}</div>
+          <div style="font-size: 0.75rem; color: #6b7280;">${count}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('practiceChart').innerHTML = Object.entries(practices).map(([p, count]) => `
+        <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb;">
+          <span style="font-size: 0.875rem;">${p}</span>
+          <span style="font-size: 0.875rem; font-weight: 600;">${count}</span>
+        </div>
+      `).join('');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    function fillDemo() {
+      document.querySelector('[name="contactName"]').value = 'Sarah Johnson';
+      document.querySelector('[name="phone"]').value = '(713) 555-0142';
+      document.querySelector('[name="email"]').value = 'sarah.j@email.com';
+      document.getElementById('incidentDate').value = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      document.querySelector('[name="practiceArea"]').value = 'PI';
+      document.getElementById('severity').value = 'serious';
+      document.querySelector('[name="summary"]').value = 'Rear-end collision on I-45. Client suffered whiplash and lower back injury. Transported to hospital via ambulance. Other driver cited for following too closely.';
+      document.querySelector('[name="medicalInfo"]').value = 'ER visit 04/15. Follow-up with orthopedic specialist. MRI scheduled. No pre-existing conditions.';
+      calculateScore();
+    }
+
+    updateStats();
+  </script>
+</body>
+</html>

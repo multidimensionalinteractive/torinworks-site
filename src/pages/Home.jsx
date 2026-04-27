@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon } from '../components/Icon.jsx'
+import { useResponsiveGrid } from '../hooks/useResponsiveGrid.js'
 
 /* ─── Industry content overrides per pillar ─── */
 const INDUSTRY = {
@@ -265,6 +266,8 @@ function Consulting() {
   const [isMobile, setIsMobile] = useState(false)
   const [expanded, setExpanded] = useState(new Set())
   const [industry, setIndustry] = useState(null) // null = general
+  const headerGridRef = useResponsiveGrid('1fr 1fr')
+  const outcomeGridRef = useResponsiveGrid('1fr 1fr')
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 760px)')
@@ -301,7 +304,7 @@ function Consulting() {
   return (
     <section id="consulting" style={{ background: 'var(--paper-2)', padding: '120px 0', borderTop: '1px solid var(--line)' }}>
       <div className="container-wide">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', marginBottom: 48, alignItems: 'end' }}>
+        <div ref={headerGridRef} style={{ display: 'grid', gap: 'clamp(40px, 5vw, 80px)', marginBottom: 48, alignItems: 'end' }}>
           <div>
             <div className="eyebrow" style={{ marginBottom: 20 }}>Consulting</div>
             <h2 style={{ fontSize: 'clamp(38px, 4vw, 56px)', lineHeight: 1.08, letterSpacing: '-0.02em' }}>
@@ -343,7 +346,7 @@ function Consulting() {
           )}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 1, background: 'var(--line)', border: '1px solid var(--line)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: 1, background: 'var(--line)', border: '1px solid var(--line)' }}>
           {PILLARS.map((p, i) => {
             const items = getItems(p)
             return (
@@ -369,14 +372,14 @@ function Consulting() {
           })}
         </div>
 
-        <div style={{ marginTop: 40, background: 'var(--paper)', border: '1px solid var(--line)', padding: '32px 34px', display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'center' }}>
+        <div ref={outcomeGridRef} className="r-pad-sm" style={{ marginTop: 40, background: 'var(--paper)', border: '1px solid var(--line)', padding: '32px 34px', gap: 32, alignItems: 'center', display: 'grid' }}>
           <div>
             <div style={{ fontFamily: 'var(--serif)', fontSize: 22, letterSpacing: '-0.01em', marginBottom: 8 }}>Outcome</div>
             <p style={{ fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.6, margin: 0, maxWidth: 720 }}>
               A cohesive, data-driven marketing ecosystem that connects strategy, execution, and automation — enabling sustainable growth, improved efficiency, and measurable ROI.
             </p>
           </div>
-          <Link to="/contact" className="btn btn-primary" style={{ whiteSpace: 'nowrap' }}>
+          <Link to="/contact" className="btn btn-primary r-btn-full r-btn-text-sm">
             Discuss your goals <Icon name="arrow" size={16} />
           </Link>
         </div>
@@ -413,15 +416,15 @@ function NotSure() {
           ))}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: mode === 'both' ? '1fr 1fr' : '1fr', gap: 40 }}>
+        <div className={mode === 'both' ? 'r-grid-2' : ''} style={{ display: 'grid', gridTemplateColumns: mode === 'both' ? '1fr 1fr' : '1fr', gap: 40 }}>
           {mode === 'consulting' && (
-            <div style={{ border: '1px solid var(--line)', padding: '40px 36px', background: 'var(--paper-2)' }}>
+            <div className="r-pad-sm" style={{ border: '1px solid var(--line)', padding: '40px 36px', background: 'var(--paper-2)' }}>
               <div style={{ fontFamily: 'var(--mono)', fontSize: 10.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-deep)', marginBottom: 16 }}>Custom Consulting</div>
               <div style={{ fontFamily: 'var(--serif)', fontSize: 26, letterSpacing: '-0.015em', marginBottom: 8 }}>Strategy-led. Scoped to you.</div>
               <p style={{ fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.6, maxWidth: 600, margin: '0 0 28px' }}>
                 For businesses that need deep strategic work — market entry, rebranding, full-stack buildout, or complex integrations. We design and execute custom growth systems.
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+              <div className="r-grid-2" style={{ gap: 20 }}>
                 {[
                   { t: 'Best for', b: 'Established businesses with specific growth challenges or strategic transitions' },
                   { t: 'Engagement', b: 'Project-based or ongoing retainer (typically $3.5K–$25K/mo)' },
@@ -442,13 +445,13 @@ function NotSure() {
             </div>
           )}
           {mode === 'system' && (
-            <div style={{ border: '1px solid var(--line)', padding: '40px 36px', background: 'var(--paper-2)' }}>
+            <div className="r-pad-sm" style={{ border: '1px solid var(--line)', padding: '40px 36px', background: 'var(--paper-2)' }}>
               <div style={{ fontFamily: 'var(--mono)', fontSize: 10.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-deep)', marginBottom: 16 }}>Torin System</div>
               <div style={{ fontFamily: 'var(--serif)', fontSize: 26, letterSpacing: '-0.015em', marginBottom: 8 }}>Productized. Ready to run.</div>
               <p style={{ fontSize: 15, color: 'var(--ink-muted)', lineHeight: 1.6, maxWidth: 600, margin: '0 0 28px' }}>
                 For appointment-based practices that need a proven lead-capture-to-conversion engine. A complete system, operated by our team, at a predictable monthly cost.
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+              <div className="r-grid-2" style={{ gap: 20 }}>
                 {[
                   { t: 'Best for', b: 'Dental, medical, and legal practices that rely on inbound inquiries' },
                   { t: 'Pricing', b: 'Flat monthly fee from $1,200/mo — predictable, scalable' },
@@ -476,6 +479,8 @@ function NotSure() {
 
 /* ─── System Teaser ─── */
 function SystemTeaser() {
+  const outerGridRef = useResponsiveGrid('1fr 1fr')
+  const innerGridRef = useResponsiveGrid('1fr 1fr')
   return (
     <section id="system" style={{ background: 'var(--night)', color: 'white', padding: '120px 0', position: 'relative', overflow: 'hidden' }}>
       <div style={{
@@ -488,7 +493,7 @@ function SystemTeaser() {
         background: 'radial-gradient(ellipse at center, oklch(45% 0.14 220 / 0.35), transparent 65%)', pointerEvents: 'none',
       }} />
       <div className="container-wide" style={{ position: 'relative' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', alignItems: 'center' }}>
+        <div ref={outerGridRef} style={{ display: 'grid', gap: 'clamp(40px, 5vw, 80px)', alignItems: 'center' }}>
           <div>
             <div className="eyebrow on-dark" style={{ marginBottom: 20 }}>Lead capture & conversion</div>
             <h2 style={{ fontSize: 'clamp(36px, 3.8vw, 52px)', lineHeight: 1.12, letterSpacing: '-0.02em', color: 'white' }}>
@@ -507,17 +512,17 @@ function SystemTeaser() {
               </Link>
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: 'oklch(100% 0 0 / 0.1)', border: '1px solid oklch(100% 0 0 / 0.1)' }}>
+          <div ref={innerGridRef} style={{ display: 'grid', gap: 1, background: 'oklch(100% 0 0 / 0.1)', border: '1px solid oklch(100% 0 0 / 0.1)' }}>
             {[
               { num: '< 60s', label: 'First response', body: 'Every inquiry answered before your competitor even sees it.' },
               { num: '+38%', label: 'Booked consults', body: 'More of the leads you already pay for turn into appointments.' },
               { num: '24/7', label: 'Coverage', body: 'Nights, weekends, holidays — never miss another inquiry.' },
               { num: '$54k', label: 'Revenue recovered', body: 'Illustrative monthly lift for a typical practice.' },
             ].map((s, i) => (
-              <div key={i} style={{ background: 'oklch(100% 0 0 / 0.03)', padding: '32px 26px' }}>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: 40, letterSpacing: '-0.025em', color: 'oklch(78% 0.11 215)', marginBottom: 8 }}>{s.num}</div>
+              <div className="r-pad-sm" key={i} style={{ background: 'oklch(100% 0 0 / 0.03)', padding: '32px 26px' }}>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(28px, 5vw, 40px)', letterSpacing: '-0.025em', color: 'oklch(78% 0.11 215)', marginBottom: 8 }}>{s.num}</div>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: 18, letterSpacing: '-0.01em', color: 'white', marginBottom: 8 }}>{s.label}</div>
-                <div style={{ fontSize: 13.5, color: 'oklch(78% 0.015 230)', lineHeight: 1.55 }}>{s.body}</div>
+                <div style={{ fontSize: 'clamp(12.5px, 3.5vw, 13.5px)', color: 'oklch(78% 0.015 230)', lineHeight: 1.55 }}>{s.body}</div>
               </div>
             ))}
           </div>
@@ -562,13 +567,25 @@ function Outcomes() {
 
 /* ─── CTA ─── */
 function CTA() {
+  const outerGridRef = useResponsiveGrid('1fr 1fr')
+  const innerGridRef = useResponsiveGrid('1fr 1fr')
+  const ctaBtnRef = useRef(null)
+  useEffect(() => {
+    const el = ctaBtnRef.current
+    if (!el) return
+    const mq = window.matchMedia('(max-width: 760px)')
+    const apply = () => { el.style.alignItems = mq.matches ? 'stretch' : 'flex-start' }
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
   return (
     <section style={{ background: 'var(--night)', color: 'white', padding: '96px 0', position: 'relative', overflow: 'hidden' }}>
       <div style={{
         position: 'absolute', inset: 0,
         background: 'radial-gradient(ellipse at 80% 50%, oklch(45% 0.14 220 / 0.4), transparent 60%)',
       }} />
-      <div className="container-wide" style={{ position: 'relative', display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 'clamp(40px, 5vw, 60px)', alignItems: 'center' }}>
+      <div ref={outerGridRef} className="container-wide" style={{ position: 'relative', display: 'grid', gap: 'clamp(40px, 5vw, 60px)', alignItems: 'center' }}>
         <div>
           <div className="eyebrow on-dark" style={{ marginBottom: 20 }}>Start with clarity</div>
           <h2 style={{ fontSize: 'clamp(34px, 3.6vw, 52px)', lineHeight: 1.08, letterSpacing: '-0.02em', color: 'white' }}>
@@ -577,7 +594,7 @@ function CTA() {
           <p style={{ fontSize: 17, color: 'oklch(85% 0.015 230)', marginTop: 20, lineHeight: 1.6, maxWidth: 520 }}>
             45 minutes. We evaluate your current marketing stack, identify the highest-leverage opportunities, and leave you with a clear, written roadmap — whether you work with us or not.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 28, maxWidth: 520 }}>
+          <div ref={innerGridRef} style={{ display: 'grid', gap: 16, marginTop: 28, maxWidth: 520 }}>
             {[
               { t: 'No commitment', b: "This is a real assessment, not a disguised sales pitch. Walk away with actionable insights either way." },
               { t: 'Tailored to you', b: "We don't use templates. Every recommendation is based on your business model, market, and current data." },
@@ -589,11 +606,11 @@ function CTA() {
             ))}
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start' }}>
-          <Link to="/contact" className="btn btn-primary" style={{ padding: '18px 26px', fontSize: 15 }}>
+        <div ref={ctaBtnRef} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <Link to="/contact" className="btn btn-primary r-btn-full r-btn-text-sm" style={{ padding: '18px 26px', fontSize: 15 }}>
             Book your free assessment <Icon name="arrow" size={16} />
           </Link>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.12em', color: 'oklch(70% 0.03 220)', marginTop: 8 }}>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.12em', color: 'oklch(70% 0.03 220)', marginTop: 8, lineHeight: 1.5 }}>
             No pitch. No pressure. Just a plan.
           </div>
         </div>

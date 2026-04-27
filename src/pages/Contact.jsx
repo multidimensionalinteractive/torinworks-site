@@ -1,8 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon } from '../components/Icon.jsx'
 
 export default function Contact() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 760px)')
+    const update = () => setIsMobile(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
   const [form, setForm] = useState({ name: '', email: '', phone: '', practice: '', message: '' })
   const [status, setStatus] = useState('idle') // idle | sending | sent | error
 
@@ -46,7 +54,7 @@ export default function Contact() {
 
       <section style={{ background: 'var(--paper)', padding: '100px 0' }}>
         <div className="container-wide">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 'clamp(40px, 5vw, 80px)', alignItems: 'start' }}>
             <div>
               <div className="eyebrow" style={{ marginBottom: 20 }}>What to expect</div>
               <h2 style={{ fontSize: 'clamp(28px, 3vw, 40px)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 24 }}>

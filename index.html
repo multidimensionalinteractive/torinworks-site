@@ -16,6 +16,60 @@
   gtag('js', new Date());
   gtag('config', 'G-V3WBT4M569');
 </script>
+<script>
+(function() {
+  function fix() {
+    var mobile = window.innerWidth < 760;
+    function setGrid(sel, desk) {
+      var el = document.querySelector(sel);
+      if (el) el.style.gridTemplateColumns = mobile ? '1fr' : desk;
+    }
+    // Homepage sections
+    setGrid('#consulting .container-wide > div', '1fr 1fr');
+    setGrid('#system .container-wide > div', '1fr 1fr');
+    setGrid('#system .container-wide > div > div:last-child', '1fr 1fr');
+    // CTA section (var(--night) background, no id)
+    var sections = document.querySelectorAll('section');
+    for (var i = 0; i < sections.length; i++) {
+      var s = sections[i];
+      var bg = s.style.background || '';
+      if (bg.indexOf('var(--night)') !== -1) {
+        var cw = s.querySelector('.container-wide');
+        if (cw) {
+          var divs = cw.querySelectorAll(':scope > div');
+          for (var j = 0; j < divs.length; j++) {
+            var d = divs[j];
+            if (d.style.display === 'grid') d.style.gridTemplateColumns = mobile ? '1fr' : '1fr 1fr';
+            var inner = d.querySelectorAll(':scope > div');
+            for (var k = 0; k < inner.length; k++) {
+              if (inner[k].style.display === 'grid') inner[k].style.gridTemplateColumns = mobile ? '1fr' : '1fr 1fr';
+            }
+          }
+        }
+      }
+      // Contact page (var(--paper) background)
+      if (bg.indexOf('var(--paper)') !== -1) {
+        var cw = s.querySelector('.container-wide');
+        if (cw) {
+          var divs = cw.querySelectorAll(':scope > div');
+          for (var j = 0; j < divs.length; j++) {
+            var d = divs[j];
+            if (d.style.display === 'grid') d.style.gridTemplateColumns = mobile ? '1fr' : '1fr 1fr';
+          }
+        }
+      }
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fix);
+  } else {
+    fix();
+  }
+  window.addEventListener('resize', fix);
+  setTimeout(fix, 100);
+  setTimeout(fix, 500);
+})();
+</script>
   <script type="module" crossorigin src="/assets/index-C9DrKZNT.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-B5sefw_M.css">
 </head>

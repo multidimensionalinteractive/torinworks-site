@@ -81,7 +81,19 @@ button { font-family: var(--sans); cursor: pointer; border: none; background: no
 }
 
 /* Responsive grid utilities */
+.r-split { display: grid; grid-template-columns: 1fr 1fr; }
+.r-grid-2 { display: grid; grid-template-columns: 1fr 1fr; }
+.r-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.r-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+/* Tablet + mobile breakpoint */
+@media (max-width: 900px) {
+  .r-split { grid-template-columns: 1fr !important; }
+}
+
+/* Mobile-only breakpoint */
 @media (max-width: 760px) {
+  .container, .container-wide { padding: 0 20px !important; }
   .r-split { grid-template-columns: 1fr !important; }
   .r-grid-2 { grid-template-columns: 1fr !important; }
   .r-grid-3 { grid-template-columns: 1fr !important; }
@@ -91,6 +103,11 @@ button { font-family: var(--sans); cursor: pointer; border: none; background: no
   .r-table-row > :nth-child(3) { text-align: left !important; }
   .r-pad-sm { padding: 24px 20px !important; }
   .r-gap-sm { gap: 16px !important; }
+  .r-stretch { align-items: stretch !important; }
+  .r-stretch > * { width: 100% !important; justify-content: center !important; }
+  .r-btn-full { width: 100% !important; justify-content: center !important; white-space: normal !important; text-align: center !important; }
+  .r-text-sm { font-size: clamp(14px, 4.2vw, 16px) !important; }
+  .r-btn-text-sm { font-size: 14px !important; padding: 14px 18px !important; }
 }
 
 /* Form styles */
