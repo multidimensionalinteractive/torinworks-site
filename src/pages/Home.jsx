@@ -93,7 +93,7 @@ const INDUSTRIES = Object.keys(INDUSTRY)
 function Hero() {
   return (
     <section style={{
-      position: 'relative', minHeight: '100vh', color: 'white', overflow: 'hidden',
+      position: 'relative', minHeight: '100dvh', color: 'white',
       background: 'var(--night)', display: 'flex', flexDirection: 'column', paddingTop: 88,
     }}>
       <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
