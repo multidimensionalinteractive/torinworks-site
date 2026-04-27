@@ -13,6 +13,4 @@
 </IfModule>
 
 # Fix MIME type for .docx files (Hostinger serves as text/plain by default)
-<IfModule mod_mime.c>
-  AddType application/vnd.openxmlformats-officedocument.wordprocessingml.document .docx
-</IfModule>
+AddType application/vnd.openxmlformats-officedocument.wordprocessingml.document .docx
